@@ -10,3 +10,7 @@ export const methodClassNames: Record<string, string> = {
 export const getMethodClasses = (method: string) =>
 	methodClassNames[method.toUpperCase()] ??
 	"bg-gray-100 text-gray-700 dark:bg-gray-500/10 dark:text-gray-300";
+
+export const ENDPOINT_LIST_SKELETON_COUNT = 4;
+
+export const ENDPOINT_LIST_LOAD_DELAY_MS = 600;

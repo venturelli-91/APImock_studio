@@ -13,3 +13,7 @@ export interface EndpointListFormPanelProps {
 	onSubmit: FormEventHandler<HTMLFormElement>;
 	onCancel: () => void;
 }
+
+export interface EndpointListSkeletonProps {
+	count?: number;
+}
