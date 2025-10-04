@@ -1,7 +1,6 @@
 import { CardDescriptionProps } from "../../../types/shared/card.types";
 
-const BASE_CARD_DESCRIPTION_CLASSES =
-	"text-base text-gray-500 sm:text-lg dark:text-gray-400";
+const BASE_CARD_DESCRIPTION_CLASSES = "text-base text-slate-300 sm:text-lg";
 
 const CardDescription = ({
 	className = "",

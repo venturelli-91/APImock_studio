@@ -1,15 +1,15 @@
-import { Button } from "../../../shared/button";
 import {
 	FloatingLabelInput,
 	FloatingLabelTextarea,
 } from "../../../shared/input";
 import { EndpointFormProps } from "../../../../types/features/endpoints/endpoint-form.types";
 
-const EndpointForm = ({ onSubmit }: EndpointFormProps) => (
+const EndpointForm = ({ onSubmit, id }: EndpointFormProps) => (
 	<form
 		onSubmit={onSubmit}
-		className="max-w-3xl mx-auto space-y-6">
-		<div className="grid md:grid-cols-2 md:gap-6">
+		id={id}
+		className="space-y-6">
+		<div className="grid gap-6 md:grid-cols-2">
 			<FloatingLabelInput
 				id="endpoint_name"
 				name="endpointName"
@@ -28,7 +28,7 @@ const EndpointForm = ({ onSubmit }: EndpointFormProps) => (
 			/>
 		</div>
 
-		<div className="grid md:grid-cols-2 md:gap-6">
+		<div className="grid gap-6 md:grid-cols-2">
 			<FloatingLabelInput
 				id="http_method"
 				name="httpMethod"
@@ -57,22 +57,24 @@ const EndpointForm = ({ onSubmit }: EndpointFormProps) => (
 			rows={4}
 		/>
 
-		<FloatingLabelTextarea
-			id="response_headers"
-			name="headers"
-			label="Response headers (JSON)"
-			containerClassName="mb-5"
-			rows={4}
-		/>
+		<div className="grid gap-6 md:grid-cols-[2fr_1fr]">
+			<FloatingLabelTextarea
+				id="response_headers"
+				name="headers"
+				label="Response headers (JSON)"
+				containerClassName="mb-5"
+				rows={4}
+			/>
 
-		<FloatingLabelInput
-			id="response_delay"
-			name="delay"
-			type="number"
-			label="Response delay (ms)"
-			containerClassName="mb-5"
-			min={0}
-		/>
+			<FloatingLabelInput
+				id="response_delay"
+				name="delay"
+				type="number"
+				label="Response delay (ms)"
+				containerClassName="mb-5"
+				min={0}
+			/>
+		</div>
 
 		<FloatingLabelTextarea
 			id="json_response"
@@ -82,12 +84,6 @@ const EndpointForm = ({ onSubmit }: EndpointFormProps) => (
 			rows={8}
 			required
 		/>
-
-		<Button
-			type="submit"
-			className="w-full sm:w-auto">
-			Save endpoint
-		</Button>
 	</form>
 );
 

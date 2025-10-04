@@ -68,7 +68,7 @@ const EndpointList = () => {
 	};
 
 	return (
-		<div className="space-y-10">
+		<div className="flex h-full flex-col space-y-10 overflow-y-auto pr-2">
 			<div className="space-y-4">
 				<EndpointListHeader />
 				<div

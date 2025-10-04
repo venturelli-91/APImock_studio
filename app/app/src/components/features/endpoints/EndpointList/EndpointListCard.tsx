@@ -24,7 +24,7 @@ const EndpointListCard = ({
 					)}`}>
 					{endpoint.httpMethod}
 				</span>
-				<span className="text-xs font-medium text-gray-500 dark:text-gray-400">
+				<span className="text-xs font-medium text-slate-300">
 					Status {endpoint.statusCode}
 				</span>
 			</div>
@@ -33,12 +33,10 @@ const EndpointListCard = ({
 				{endpoint.description}
 			</CardDescription>
 		</CardHeader>
-		<CardContent className="flex flex-col gap-3 text-sm">
-			<span className="font-medium text-gray-900 dark:text-gray-100">
-				Path: {endpoint.path}
-			</span>
+		<CardContent className="flex flex-col gap-3 text-left text-sm">
+			<span className="font-medium text-slate-100">Path: {endpoint.path}</span>
 			{typeof endpoint.responseDelayMs === "number" && (
-				<span className="text-gray-500 dark:text-gray-400">
+				<span className="text-slate-300">
 					Delay: {endpoint.responseDelayMs}ms
 				</span>
 			)}

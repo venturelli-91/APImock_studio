@@ -2,7 +2,7 @@ import { forwardRef } from "react";
 import { ModalCloseButtonProps } from "../../../types/shared/modal.types";
 
 const BASE_CLOSE_BUTTON_CLASSES =
-	"inline-flex h-10 w-10 items-center justify-center rounded-md text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-offset-gray-900";
+	"inline-flex h-10 w-10 items-center justify-center rounded-full text-gray-500 transition-colors hover:bg-white/20 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-transparent dark:text-gray-300 dark:hover:bg-white/10 dark:hover:text-white";
 
 const ModalCloseButton = forwardRef<HTMLButtonElement, ModalCloseButtonProps>(
 	({ className = "", type = "button", ...rest }, ref) => {

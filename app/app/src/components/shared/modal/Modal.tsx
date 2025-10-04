@@ -6,10 +6,10 @@ import { useEffect, useState } from "react";
 import { ModalProps } from "../../../types/shared/modal.types";
 
 const BASE_OVERLAY_CLASSES =
-	"fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 backdrop-blur-sm px-4 py-8";
+	"fixed inset-0 z-50 flex items-center justify-center bg-gray-950/70 px-4 py-8 backdrop-blur-md";
 const BASE_CONTAINER_CLASSES = "w-full max-w-md";
 const BASE_CONTENT_CLASSES =
-	"relative w-full bg-white rounded-lg shadow-sm dark:bg-gray-800";
+	"relative w-full rounded-2xl border border-white/15 bg-white/80 shadow-lg backdrop-blur-xl transition-colors dark:border-white/10 dark:bg-gray-900/70";
 
 const Modal = ({
 	isOpen,
