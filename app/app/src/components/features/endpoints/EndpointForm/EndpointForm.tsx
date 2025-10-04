@@ -1,13 +1,9 @@
-import { FormEventHandler } from "react";
 import { Button } from "../../../shared/button";
 import {
 	FloatingLabelInput,
 	FloatingLabelTextarea,
 } from "../../../shared/input";
-
-interface EndpointFormProps {
-	onSubmit?: FormEventHandler<HTMLFormElement>;
-}
+import { EndpointFormProps } from "../../../../types/features/endpoints/endpoint-form.types";
 
 const EndpointForm = ({ onSubmit }: EndpointFormProps) => (
 	<form
