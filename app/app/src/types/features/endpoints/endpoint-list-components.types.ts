@@ -5,6 +5,8 @@ export interface EndpointListCardProps {
 	endpoint: EndpointListItem;
 	onEdit: (endpoint: EndpointListItem) => void;
 	onDelete: (endpoint: EndpointListItem) => void;
+	onSelect?: (endpoint: EndpointListItem) => void;
+	isActive?: boolean;
 }
 
 export interface EndpointListFormPanelProps {

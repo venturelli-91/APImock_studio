@@ -22,15 +22,7 @@ const EndpointList = () => {
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
-
-	useEffect(() => {
-		const timer = setTimeout(() => {
-			setEndpoints(mockEndpointList);
-			setIsLoading(false);
-		}, ENDPOINT_LIST_LOAD_DELAY_MS);
-
-		return () => clearTimeout(timer);
-	}, []);
+	const [activeEndpointId, setActiveEndpointId] = useState<string | null>(null);
 
 	const handleEdit = (endpoint: EndpointListItem) => {
 		setSelectedEndpoint(endpoint);
@@ -67,27 +59,151 @@ const EndpointList = () => {
 		setSelectedEndpoint(null);
 	};
 
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			setEndpoints(mockEndpointList);
+			setIsLoading(false);
+			setActiveEndpointId(
+				(previous) => previous ?? mockEndpointList[0]?.id ?? null
+			);
+		}, ENDPOINT_LIST_LOAD_DELAY_MS);
+
+		return () => clearTimeout(timer);
+	}, []);
+
+	useEffect(() => {
+		if (!endpoints.length) {
+			setActiveEndpointId(null);
+			return;
+		}
+
+		if (
+			activeEndpointId &&
+			endpoints.some((endpoint) => endpoint.id === activeEndpointId)
+		) {
+			return;
+		}
+
+		setActiveEndpointId(endpoints[0]?.id ?? null);
+	}, [endpoints, activeEndpointId]);
+
+	const handleSelectEndpoint = (endpoint: EndpointListItem) => {
+		setActiveEndpointId(endpoint.id);
+	};
+
+	const activeEndpoint = endpoints.find(
+		(endpoint) => endpoint.id === activeEndpointId
+	);
+
 	return (
-		<div className="flex h-full flex-col space-y-10 overflow-y-auto pr-2">
-			<div className="space-y-4">
+		<div className="grid h-full gap-6 overflow-hidden lg:grid-cols-[minmax(0,340px)_1fr]">
+			<section className="flex h-full flex-col">
 				<EndpointListHeader />
 				<div
-					className="grid gap-4 md:grid-cols-2"
+					className="relative mt-6 flex-1 overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-lg"
 					aria-busy={isLoading}>
-					{isLoading ? (
-						<EndpointListSkeleton count={ENDPOINT_LIST_SKELETON_COUNT} />
-					) : (
-						endpoints.map((endpoint) => (
-							<EndpointListCard
-								key={endpoint.id}
-								endpoint={endpoint}
-								onEdit={handleEdit}
-								onDelete={handleDelete}
-							/>
-						))
+					<div
+						className="absolute inset-y-0 right-0 w-2 bg-gradient-to-b from-cyan-400/50 to-transparent opacity-0"
+						aria-hidden
+					/>
+					<div className="flex h-full flex-col overflow-hidden">
+						<div className="flex items-center justify-between border-b border-white/10 px-4 py-3 text-xs uppercase tracking-[0.2em] text-slate-400">
+							<span>Endpoints</span>
+							<span>{isLoading ? "Loading" : `${endpoints.length} itens`}</span>
+						</div>
+						<div className="flex-1 space-y-4 overflow-y-auto px-4 py-4 pr-6">
+							{isLoading ? (
+								<EndpointListSkeleton count={ENDPOINT_LIST_SKELETON_COUNT} />
+							) : endpoints.length ? (
+								endpoints.map((endpoint) => (
+									<EndpointListCard
+										key={endpoint.id}
+										endpoint={endpoint}
+										onEdit={handleEdit}
+										onDelete={handleDelete}
+										onSelect={handleSelectEndpoint}
+										isActive={activeEndpointId === endpoint.id}
+									/>
+								))
+							) : (
+								<p className="text-center text-sm text-slate-300">
+									Sem endpoints mockados ainda.
+								</p>
+							)}
+						</div>
+					</div>
+				</div>
+			</section>
+			<section className="hidden h-full flex-col rounded-2xl border border-white/10 bg-white/5 p-6 text-slate-100 backdrop-blur-lg lg:flex">
+				<div className="flex items-center justify-between border-b border-white/10 pb-4">
+					<h2 className="text-base font-semibold uppercase tracking-[0.3em] text-slate-300">
+						Preview
+					</h2>
+					{activeEndpoint && (
+						<span className="rounded-full border border-white/10 px-3 py-1 text-xs font-medium uppercase tracking-wide text-slate-300">
+							{activeEndpoint.httpMethod}
+						</span>
 					)}
 				</div>
-			</div>
+				<div className="mt-6 flex-1 overflow-y-auto space-y-6">
+					{activeEndpoint ? (
+						<>
+							<div className="space-y-2">
+								<h3 className="text-xl font-semibold">{activeEndpoint.name}</h3>
+								<p className="text-sm text-slate-300">
+									{activeEndpoint.description}
+								</p>
+							</div>
+							<dl className="space-y-3 text-sm text-slate-300">
+								<div className="rounded-lg border border-white/10 bg-slate-950/40 px-4 py-3">
+									<dt className="text-xs uppercase tracking-[0.2em]">Status</dt>
+									<dd className="mt-1 font-semibold text-slate-100">
+										{activeEndpoint.statusCode}
+									</dd>
+								</div>
+								<div className="rounded-lg border border-white/10 bg-slate-950/40 px-4 py-3">
+									<dt className="text-xs uppercase tracking-[0.2em]">Path</dt>
+									<dd className="mt-1 font-mono text-sm text-slate-100">
+										{activeEndpoint.path}
+									</dd>
+								</div>
+								{typeof activeEndpoint.responseDelayMs === "number" && (
+									<div className="rounded-lg border border-white/10 bg-slate-950/40 px-4 py-3">
+										<dt className="text-xs uppercase tracking-[0.2em]">
+											Delay
+										</dt>
+										<dd className="mt-1 font-semibold text-slate-100">
+											{activeEndpoint.responseDelayMs}ms
+										</dd>
+									</div>
+								)}
+							</dl>
+							<div className="space-y-2">
+								<h4 className="text-xs uppercase tracking-[0.2em] text-slate-400">
+									Resposta simulada
+								</h4>
+								<pre className="overflow-x-auto rounded-xl border border-white/10 bg-slate-950/60 p-4 text-sm text-slate-200">
+									{JSON.stringify(
+										{
+											message: `${activeEndpoint.httpMethod} ${activeEndpoint.path} mocked response`,
+											status: activeEndpoint.statusCode,
+										},
+										null,
+										2
+									)}
+								</pre>
+							</div>
+						</>
+					) : (
+						<div className="flex h-full flex-col items-center justify-center space-y-3 text-center text-slate-400">
+							<p className="text-sm uppercase tracking-[0.3em]">Preview</p>
+							<p className="text-sm">
+								Selecione um endpoint para visualizar detalhes.
+							</p>
+						</div>
+					)}
+				</div>
+			</section>
 
 			<EndpointListFormPanel
 				isVisible={isFormVisible}
