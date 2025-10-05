@@ -9,6 +9,7 @@ export const mockEndpointList: EndpointListItem[] = [
 		statusCode: 200,
 		responseDelayMs: 120,
 		description: "Returns the registered users",
+		collectionId: "collection-core",
 	},
 	{
 		id: "2",
@@ -17,6 +18,7 @@ export const mockEndpointList: EndpointListItem[] = [
 		path: "/api/mocks",
 		statusCode: 201,
 		description: "Creates a mocked endpoint definition",
+		collectionId: "collection-core",
 	},
 	{
 		id: "3",
@@ -25,5 +27,6 @@ export const mockEndpointList: EndpointListItem[] = [
 		path: "/api/mocks/:id",
 		statusCode: 204,
 		description: "Removes a mocked endpoint",
+		collectionId: "collection-maintenance",
 	},
 ];

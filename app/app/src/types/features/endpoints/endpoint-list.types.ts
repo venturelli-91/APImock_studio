@@ -6,4 +6,5 @@ export interface EndpointListItem {
 	statusCode: number;
 	responseDelayMs?: number;
 	description?: string;
+	collectionId?: string;
 }

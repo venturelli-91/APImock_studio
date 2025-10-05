@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { mockCollections } from "../../../../data/mock-collections.data";
 import { mockEndpointList } from "../../../../data/mock-endpoints.data";
 import type { EndpointListItem } from "../../../../types/features/endpoints/endpoint-list.types";
 import type { EndpointListFormPanelProps } from "../../../../types/features/endpoints/endpoint-list-components.types";
 import { EndpointDeleteModal } from "../EndpointDeleteModal";
+import EndpointCollectionsSidebar from "./EndpointCollectionsSidebar";
 import EndpointListCard from "./EndpointListCard";
 import EndpointListFormPanel from "./EndpointListFormPanel";
 import EndpointListHeader from "./EndpointListHeader";
@@ -23,6 +25,9 @@ const EndpointList = () => {
 	const [isDeleting, setIsDeleting] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 	const [activeEndpointId, setActiveEndpointId] = useState<string | null>(null);
+	const [activeCollectionId, setActiveCollectionId] = useState<string | null>(
+		mockCollections[0]?.id ?? null
+	);
 
 	const handleEdit = (endpoint: EndpointListItem) => {
 		setSelectedEndpoint(endpoint);
@@ -63,32 +68,47 @@ const EndpointList = () => {
 		const timer = setTimeout(() => {
 			setEndpoints(mockEndpointList);
 			setIsLoading(false);
-			setActiveEndpointId(
-				(previous) => previous ?? mockEndpointList[0]?.id ?? null
-			);
 		}, ENDPOINT_LIST_LOAD_DELAY_MS);
 
 		return () => clearTimeout(timer);
 	}, []);
 
+	const filteredEndpoints = useMemo(() => {
+		if (!activeCollectionId) {
+			return endpoints;
+		}
+
+		return endpoints.filter(
+			(endpoint) => endpoint.collectionId === activeCollectionId
+		);
+	}, [endpoints, activeCollectionId]);
+
 	useEffect(() => {
-		if (!endpoints.length) {
+		if (!filteredEndpoints.length) {
 			setActiveEndpointId(null);
 			return;
 		}
 
 		if (
 			activeEndpointId &&
-			endpoints.some((endpoint) => endpoint.id === activeEndpointId)
+			filteredEndpoints.some((endpoint) => endpoint.id === activeEndpointId)
 		) {
 			return;
 		}
 
-		setActiveEndpointId(endpoints[0]?.id ?? null);
-	}, [endpoints, activeEndpointId]);
+		setActiveEndpointId(filteredEndpoints[0]?.id ?? null);
+	}, [filteredEndpoints, activeEndpointId]);
 
 	const handleSelectEndpoint = (endpoint: EndpointListItem) => {
 		setActiveEndpointId(endpoint.id);
+	};
+
+	const handleSelectCollection = (collectionId: string) => {
+		setActiveCollectionId(collectionId);
+		const firstEndpointInCollection = endpoints.find(
+			(endpoint) => endpoint.collectionId === collectionId
+		);
+		setActiveEndpointId(firstEndpointInCollection?.id ?? null);
 	};
 
 	const activeEndpoint = endpoints.find(
@@ -96,7 +116,12 @@ const EndpointList = () => {
 	);
 
 	return (
-		<div className="grid h-full gap-6 overflow-hidden lg:grid-cols-[minmax(0,340px)_1fr]">
+		<div className="grid h-full gap-6 overflow-hidden lg:grid-cols-[minmax(0,250px)_minmax(0,360px)_1fr]">
+			<EndpointCollectionsSidebar
+				collections={mockCollections}
+				activeCollectionId={activeCollectionId}
+				onSelectCollection={handleSelectCollection}
+			/>
 			<section className="flex h-full flex-col">
 				<EndpointListHeader />
 				<div
@@ -109,13 +134,15 @@ const EndpointList = () => {
 					<div className="flex h-full flex-col overflow-hidden">
 						<div className="flex items-center justify-between border-b border-white/10 px-4 py-3 text-xs uppercase tracking-[0.2em] text-slate-400">
 							<span>Endpoints</span>
-							<span>{isLoading ? "Loading" : `${endpoints.length} itens`}</span>
+							<span>
+								{isLoading ? "Loading" : `${filteredEndpoints.length} itens`}
+							</span>
 						</div>
 						<div className="flex-1 space-y-4 overflow-y-auto px-4 py-4 pr-6">
 							{isLoading ? (
 								<EndpointListSkeleton count={ENDPOINT_LIST_SKELETON_COUNT} />
-							) : endpoints.length ? (
-								endpoints.map((endpoint) => (
+							) : filteredEndpoints.length ? (
+								filteredEndpoints.map((endpoint) => (
 									<EndpointListCard
 										key={endpoint.id}
 										endpoint={endpoint}
@@ -127,7 +154,7 @@ const EndpointList = () => {
 								))
 							) : (
 								<p className="text-center text-sm text-slate-300">
-									Sem endpoints mockados ainda.
+									Nenhum endpoint nesta coleção ainda.
 								</p>
 							)}
 						</div>

@@ -1,4 +1,5 @@
 import type { FormEventHandler } from "react";
+import type { EndpointCollection } from "../collection/endpoint-collection.types";
 import type { EndpointListItem } from "./endpoint-list.types";
 
 export interface EndpointListCardProps {
@@ -18,4 +19,10 @@ export interface EndpointListFormPanelProps {
 
 export interface EndpointListSkeletonProps {
 	count?: number;
+}
+
+export interface EndpointCollectionsSidebarProps {
+	collections: EndpointCollection[];
+	activeCollectionId: string | null;
+	onSelectCollection: (collectionId: string) => void;
 }
