@@ -4,7 +4,7 @@ const EndpointPreviewSection = ({
 	activeEndpoint,
 }: EndpointPreviewSectionProps) => {
 	return (
-		<section className="hidden h-full w-full flex-col rounded-2xl border border-white/10 bg-white/5 p-5 text-slate-100 backdrop-blur-lg lg:w-[32rem] lg:max-w-[32rem] xl:flex">
+		<section className="flex w-full max-w-md flex-col justify-between rounded-2xl border border-white/10 bg-white/5 p-4 text-slate-100 backdrop-blur-lg sm:p-5 min-h-[18rem]">
 			<div className="flex items-center justify-between border-b border-white/10 pb-3">
 				<h2 className="text-base font-semibold uppercase tracking-[0.3em] text-slate-300">
 					Preview
@@ -15,31 +15,37 @@ const EndpointPreviewSection = ({
 					</span>
 				)}
 			</div>
-			<div className="mt-5 flex-1 overflow-y-auto space-y-5">
+			<div className="mt-4 flex flex-1 flex-col gap-4 overflow-hidden">
 				{activeEndpoint ? (
 					<>
 						<div className="space-y-2">
-							<h3 className="text-xl font-semibold">{activeEndpoint.name}</h3>
-							<p className="text-sm text-slate-300">
+							<h3 className="text-lg font-semibold">{activeEndpoint.name}</h3>
+							<p className="text-xs text-slate-300 sm:text-sm">
 								{activeEndpoint.description}
 							</p>
 						</div>
-						<dl className="space-y-3 text-sm text-slate-300">
-							<div className="rounded-lg border border-white/10 bg-slate-950/40 px-4 py-3">
-								<dt className="text-xs uppercase tracking-[0.2em]">Status</dt>
+						<dl className="space-y-2 text-xs text-slate-300 sm:text-sm">
+							<div className="rounded-lg border border-white/10 bg-slate-950/40 px-3 py-2 sm:px-4 sm:py-3">
+								<dt className="text-[0.65rem] uppercase tracking-[0.2em] sm:text-xs">
+									Status
+								</dt>
 								<dd className="mt-1 font-semibold text-slate-100">
 									{activeEndpoint.statusCode}
 								</dd>
 							</div>
-							<div className="rounded-lg border border-white/10 bg-slate-950/40 px-4 py-3">
-								<dt className="text-xs uppercase tracking-[0.2em]">Path</dt>
-								<dd className="mt-1 font-mono text-sm text-slate-100">
+							<div className="rounded-lg border border-white/10 bg-slate-950/40 px-3 py-2 sm:px-4 sm:py-3">
+								<dt className="text-[0.65rem] uppercase tracking-[0.2em] sm:text-xs">
+									Path
+								</dt>
+								<dd className="mt-1 font-mono text-xs text-slate-100 sm:text-sm">
 									{activeEndpoint.path}
 								</dd>
 							</div>
 							{typeof activeEndpoint.responseDelayMs === "number" && (
-								<div className="rounded-lg border border-white/10 bg-slate-950/40 px-4 py-3">
-									<dt className="text-xs uppercase tracking-[0.2em]">Delay</dt>
+								<div className="rounded-lg border border-white/10 bg-slate-950/40 px-3 py-2 sm:px-4 sm:py-3">
+									<dt className="text-[0.65rem] uppercase tracking-[0.2em] sm:text-xs">
+										Delay
+									</dt>
 									<dd className="mt-1 font-semibold text-slate-100">
 										{activeEndpoint.responseDelayMs}ms
 									</dd>
@@ -47,10 +53,10 @@ const EndpointPreviewSection = ({
 							)}
 						</dl>
 						<div className="space-y-2">
-							<h4 className="text-xs uppercase tracking-[0.2em] text-slate-400">
+							<h4 className="text-[0.65rem] uppercase tracking-[0.2em] text-slate-400 sm:text-xs">
 								Mocked response
 							</h4>
-							<pre className="overflow-x-auto rounded-xl border border-white/10 bg-slate-950/60 p-4 text-sm text-slate-200">
+							<pre className="max-h-48 overflow-auto rounded-xl border border-white/10 bg-slate-950/60 p-3 text-xs text-slate-200 sm:p-4 sm:text-sm">
 								{JSON.stringify(
 									{
 										message: `${activeEndpoint.httpMethod} ${activeEndpoint.path} mocked response`,
@@ -63,9 +69,13 @@ const EndpointPreviewSection = ({
 						</div>
 					</>
 				) : (
-					<div className="flex h-full flex-col items-center justify-center space-y-3 text-center text-slate-400">
-						<p className="text-sm uppercase tracking-[0.3em]">Preview</p>
-						<p className="text-sm">Select an endpoint to view details.</p>
+					<div className="flex flex-1 flex-col items-center justify-center space-y-3 text-center text-slate-400">
+						<p className="text-xs uppercase tracking-[0.3em] sm:text-sm">
+							Preview
+						</p>
+						<p className="text-xs sm:text-sm">
+							Select an endpoint to view details.
+						</p>
 					</div>
 				)}
 			</div>

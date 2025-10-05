@@ -22,7 +22,7 @@ const EndpointListCard = ({
 	};
 
 	const cardClasses = [
-		"flex flex-col justify-between border border-white/10 transition-all max-w-lg p-4 sm:p-5",
+		"flex w-full flex-col justify-between border border-white/10 transition-all max-w-md p-4 sm:p-5 min-h-[18rem]",
 		isActive
 			? "ring-2 ring-cyan-400/80 shadow-xl"
 			: "hover:border-cyan-400/60 hover:shadow-lg",
