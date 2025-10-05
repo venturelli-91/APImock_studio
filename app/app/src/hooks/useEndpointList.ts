@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
-import { mockCollections } from "../../../../data/mock-collections.data";
-import { mockEndpointList } from "../../../../data/mock-endpoints.data";
-import type { EndpointListItem } from "../../../../types/features/endpoints/endpoint-list.types";
-import type { EndpointListFormPanelProps } from "../../../../types/features/endpoints/endpoint-list-components.types";
-import { ENDPOINT_LIST_LOAD_DELAY_MS } from "../EndpointList/endpoint-list.constants";
+import { mockCollections } from "../data/mock-collections.data";
+import { mockEndpointList } from "../data/mock-endpoints.data";
+import type { EndpointListItem } from "../types/features/endpoints/endpoint-list.types";
+import type { EndpointListFormPanelProps } from "../types/features/endpoints/endpoint-list-components.types";
+import { ENDPOINT_LIST_LOAD_DELAY_MS } from "../components/features/endpoints/EndpointList/endpoint-list.constants";
 
 type UseEndpointListReturn = {
 	collections: typeof mockCollections;

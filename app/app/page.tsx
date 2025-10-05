@@ -1,4 +1,4 @@
-import { EndpointList } from "./src/components/features/endpoints";
+import { EndpointList } from "./src/hooks";
 
 export default function Home() {
 	return (

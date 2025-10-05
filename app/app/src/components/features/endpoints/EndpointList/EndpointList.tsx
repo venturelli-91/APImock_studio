@@ -5,7 +5,7 @@ import EndpointCollectionsSidebar from "./EndpointCollectionsSidebar";
 import EndpointListFormPanel from "./EndpointListFormPanel";
 import EndpointListMainSection from "./EndpointListMainSection";
 import EndpointPreviewSection from "./EndpointPreviewSection";
-import { useEndpointList } from "../hooks/useEndpointList";
+import { useEndpointList } from "../../../../hooks/useEndpointList";
 
 const EndpointList = () => {
 	const {
