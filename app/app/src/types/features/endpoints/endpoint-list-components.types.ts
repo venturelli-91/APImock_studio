@@ -26,3 +26,16 @@ export interface EndpointCollectionsSidebarProps {
 	activeCollectionId: string | null;
 	onSelectCollection: (collectionId: string) => void;
 }
+
+export interface EndpointListMainSectionProps {
+	isLoading: boolean;
+	filteredEndpoints: EndpointListItem[];
+	activeEndpointId: string | null;
+	onSelectEndpoint: (endpoint: EndpointListItem) => void;
+	onEditEndpoint: (endpoint: EndpointListItem) => void;
+	onDeleteEndpoint: (endpoint: EndpointListItem) => void;
+}
+
+export interface EndpointPreviewSectionProps {
+	activeEndpoint: EndpointListItem | null;
+}

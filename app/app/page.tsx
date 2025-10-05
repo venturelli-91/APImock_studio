@@ -3,7 +3,7 @@ import { EndpointList } from "./src/components/features/endpoints";
 export default function Home() {
 	return (
 		<main className="min-h-dvh bg-slate-950 px-6 py-12 text-slate-100">
-			<section className="flex w-full max-w-5xl flex-col gap-10">
+			<section className="flex w-full max-w-5xl xl:max-w-7xl flex-col gap-10">
 				<header className="space-y-6 text-left">
 					<div className="space-y-3">
 						<p className="text-sm uppercase tracking-[0.3em] text-slate-400">
@@ -25,7 +25,7 @@ export default function Home() {
 				</header>
 			</section>
 			<section className="mt-10 w-full">
-				<div className="mx-auto w-full max-w-5xl">
+				<div className="mx-auto w-full max-w-none">
 					<div className="overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-lg">
 						<EndpointList />
 					</div>
