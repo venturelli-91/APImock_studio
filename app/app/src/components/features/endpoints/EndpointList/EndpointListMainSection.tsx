@@ -16,7 +16,7 @@ const EndpointListMainSection = ({
 		<section className="flex h-full flex-col">
 			<EndpointListHeader />
 			<div
-				className="relative mt-6 flex-1 overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-lg"
+				className="relative mt-6 h-full w-full overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-lg lg:w-[32rem] lg:max-w-[32rem]"
 				aria-busy={isLoading}>
 				<div
 					className="absolute inset-y-0 right-0 w-2 bg-gradient-to-b from-cyan-400/50 to-transparent opacity-0"
@@ -29,25 +29,27 @@ const EndpointListMainSection = ({
 							{isLoading ? "Loading" : `${filteredEndpoints.length} itens`}
 						</span>
 					</div>
-					<div className="flex-1 space-y-4 overflow-y-auto px-4 py-4 pr-6">
-						{isLoading ? (
-							<EndpointListSkeleton count={ENDPOINT_LIST_SKELETON_COUNT} />
-						) : filteredEndpoints.length ? (
-							filteredEndpoints.map((endpoint) => (
-								<EndpointListCard
-									key={endpoint.id}
-									endpoint={endpoint}
-									onEdit={onEditEndpoint}
-									onDelete={onDeleteEndpoint}
-									onSelect={onSelectEndpoint}
-									isActive={activeEndpointId === endpoint.id}
-								/>
-							))
-						) : (
-							<p className="text-center text-sm text-slate-300">
-								Nenhum endpoint nesta coleção ainda.
-							</p>
-						)}
+					<div className="flex-1 overflow-y-auto px-4 py-4">
+						<div className="flex flex-col space-y-4">
+							{isLoading ? (
+								<EndpointListSkeleton count={ENDPOINT_LIST_SKELETON_COUNT} />
+							) : filteredEndpoints.length ? (
+								filteredEndpoints.map((endpoint) => (
+									<EndpointListCard
+										key={endpoint.id}
+										endpoint={endpoint}
+										onEdit={onEditEndpoint}
+										onDelete={onDeleteEndpoint}
+										onSelect={onSelectEndpoint}
+										isActive={activeEndpointId === endpoint.id}
+									/>
+								))
+							) : (
+								<p className="text-center text-sm text-slate-300">
+									Nenhum endpoint nesta coleção ainda.
+								</p>
+							)}
+						</div>
 					</div>
 				</div>
 			</div>

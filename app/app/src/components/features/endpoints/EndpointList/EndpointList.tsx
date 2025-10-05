@@ -30,7 +30,7 @@ const EndpointList = () => {
 	} = useEndpointList();
 
 	return (
-		<div className="grid h-full gap-6 overflow-hidden lg:grid-cols-[minmax(0,260px)_minmax(0,1fr)] xl:grid-cols-[minmax(0,260px)_minmax(0,1fr)_minmax(0,420px)]">
+		<div className="grid h-full items-start justify-items-start gap-y-6 gap-x-[4px] overflow-hidden lg:grid-cols-[minmax(0,260px)_auto] xl:grid-cols-[minmax(0,260px)_auto_auto]">
 			<EndpointCollectionsSidebar
 				collections={collections}
 				activeCollectionId={activeCollectionId}

@@ -4,8 +4,8 @@ const EndpointPreviewSection = ({
 	activeEndpoint,
 }: EndpointPreviewSectionProps) => {
 	return (
-		<section className="hidden h-full flex-col rounded-2xl border border-white/10 bg-white/5 p-6 text-slate-100 backdrop-blur-lg xl:flex">
-			<div className="flex items-center justify-between border-b border-white/10 pb-4">
+		<section className="hidden h-full w-full flex-col rounded-2xl border border-white/10 bg-white/5 p-5 text-slate-100 backdrop-blur-lg lg:w-[32rem] lg:max-w-[32rem] xl:flex">
+			<div className="flex items-center justify-between border-b border-white/10 pb-3">
 				<h2 className="text-base font-semibold uppercase tracking-[0.3em] text-slate-300">
 					Preview
 				</h2>
@@ -15,7 +15,7 @@ const EndpointPreviewSection = ({
 					</span>
 				)}
 			</div>
-			<div className="mt-6 flex-1 overflow-y-auto space-y-6">
+			<div className="mt-5 flex-1 overflow-y-auto space-y-5">
 				{activeEndpoint ? (
 					<>
 						<div className="space-y-2">
@@ -48,7 +48,7 @@ const EndpointPreviewSection = ({
 						</dl>
 						<div className="space-y-2">
 							<h4 className="text-xs uppercase tracking-[0.2em] text-slate-400">
-								Resposta simulada
+								Mocked response
 							</h4>
 							<pre className="overflow-x-auto rounded-xl border border-white/10 bg-slate-950/60 p-4 text-sm text-slate-200">
 								{JSON.stringify(
@@ -65,9 +65,7 @@ const EndpointPreviewSection = ({
 				) : (
 					<div className="flex h-full flex-col items-center justify-center space-y-3 text-center text-slate-400">
 						<p className="text-sm uppercase tracking-[0.3em]">Preview</p>
-						<p className="text-sm">
-							Selecione um endpoint para visualizar detalhes.
-						</p>
+						<p className="text-sm">Select an endpoint to view details.</p>
 					</div>
 				)}
 			</div>
