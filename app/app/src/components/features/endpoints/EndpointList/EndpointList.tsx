@@ -20,9 +20,9 @@ const EndpointList = () => {
 		selectedEndpoint,
 		isDeleteModalOpen,
 		isDeleting,
-		searchTerm,
-		methodFilter,
-		availableMethods,
+		isFetchingExternalApi,
+		externalApiResult,
+		externalApiError,
 		handleEdit,
 		handleDelete,
 		handleConfirmDelete,
@@ -31,34 +31,39 @@ const EndpointList = () => {
 		handleFormCancel,
 		handleSelectEndpoint,
 		handleSelectCollection,
-		handleSearchTermChange,
-		handleMethodFilterChange,
+		handleTestExternalApi,
 	} = useEndpointList();
 
 	return (
 		<div className="flex h-full flex-col gap-6">
 			<EndpointListHeader />
-			<div className="grid h-full items-start justify-items-start gap-y-6 gap-x-[4px] overflow-hidden lg:grid-cols-[minmax(0,260px)_auto] xl:grid-cols-[minmax(0,260px)_auto_auto]">
+			<div className="grid h-full items-start justify-items-start gap-y-6 gap-x-10 overflow-hidden lg:grid-cols-[minmax(0,260px)_minmax(0,1fr)]">
 				<EndpointCollectionsSidebar
 					collections={collections}
 					activeCollectionId={activeCollectionId}
 					onSelectCollection={handleSelectCollection}
 				/>
-				<EndpointListMainSection
-					isLoading={isLoading}
-					filteredEndpoints={filteredEndpoints}
-					activeEndpointId={activeEndpointId}
-					onSelectEndpoint={handleSelectEndpoint}
-					onEditEndpoint={handleEdit}
-					onDeleteEndpoint={handleDelete}
-					searchTerm={searchTerm}
-					onSearchTermChange={handleSearchTermChange}
-					methodFilter={methodFilter}
-					availableMethods={availableMethods}
-					onMethodFilterChange={handleMethodFilterChange}
-				/>
-				<div className="hidden h-full w-full xl:flex xl:items-start">
-					<EndpointPreviewSection activeEndpoint={activeEndpoint} />
+				<div className="flex h-full w-full flex-col gap-6 xl:flex-row xl:items-start xl:justify-start xl:gap-4">
+					<EndpointListMainSection
+						isLoading={isLoading}
+						filteredEndpoints={filteredEndpoints}
+						activeEndpointId={activeEndpointId}
+						onSelectEndpoint={handleSelectEndpoint}
+						onEditEndpoint={handleEdit}
+						onDeleteEndpoint={handleDelete}
+						onTestExternalApi={handleTestExternalApi}
+						isTestingExternalApi={isFetchingExternalApi}
+						externalApiError={externalApiError}
+						hasExternalApiResponse={Boolean(externalApiResult)}
+					/>
+					<div className="hidden h-full w-full xl:flex xl:items-start">
+						<EndpointPreviewSection
+							activeEndpoint={activeEndpoint}
+							externalApiResult={externalApiResult}
+							externalApiError={externalApiError}
+							isExternalApiLoading={isFetchingExternalApi}
+						/>
+					</div>
 				</div>
 			</div>
 			<EndpointListFormPanel

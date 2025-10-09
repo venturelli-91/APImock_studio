@@ -11,6 +11,10 @@ const EndpointListMainSection = ({
 	onSelectEndpoint,
 	onEditEndpoint,
 	onDeleteEndpoint,
+	onTestExternalApi,
+	isTestingExternalApi,
+	externalApiError,
+	hasExternalApiResponse,
 }: EndpointListMainSectionProps) => {
 	const [externalApiUrl, setExternalApiUrl] = useState("");
 
@@ -20,11 +24,7 @@ const EndpointListMainSection = ({
 			return;
 		}
 
-		const targetUrl = trimmedUrl.startsWith("http")
-			? trimmedUrl
-			: `https://${trimmedUrl}`;
-
-		window.open(targetUrl, "_blank", "noopener,noreferrer");
+		void onTestExternalApi(trimmedUrl);
 	};
 
 	return (
@@ -63,12 +63,19 @@ const EndpointListMainSection = ({
 									type="button"
 									onClick={handleTestExternalApi}
 									className="rounded-xl bg-cyan-500 px-4 py-2 text-sm font-semibold uppercase tracking-[0.2em] text-slate-950 transition hover:bg-cyan-400 disabled:cursor-not-allowed disabled:bg-white/10 disabled:text-slate-400"
-									disabled={!externalApiUrl.trim()}>
+									disabled={!externalApiUrl.trim() || isTestingExternalApi}>
 									Test API
 								</button>
 								<p className="text-xs text-slate-400">
-									We&apos;ll open the endpoint response in a new tab.
+									{isTestingExternalApi
+										? "Buscando a resposta..."
+										: hasExternalApiResponse
+										? "Resposta carregada no painel de preview."
+										: "Visualize a resposta completa diretamente no preview."}
 								</p>
+								{externalApiError && (
+									<p className="text-xs text-rose-400">{externalApiError}</p>
+								)}
 							</div>
 						</div>
 					</div>

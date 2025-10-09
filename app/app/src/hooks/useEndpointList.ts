@@ -5,6 +5,13 @@ import type { EndpointListItem } from "../types/features/endpoints/endpoint-list
 import type { EndpointListFormPanelProps } from "../types/features/endpoints/endpoint-list-components.types";
 import { ENDPOINT_LIST_LOAD_DELAY_MS } from "../components/features/endpoints/EndpointList/endpoint-list.constants";
 
+type ExternalApiResult = {
+	url: string;
+	payload: unknown;
+	status: number;
+	statusText: string;
+};
+
 type UseEndpointListReturn = {
 	collections: typeof mockCollections;
 	filteredEndpoints: EndpointListItem[];
@@ -16,6 +23,9 @@ type UseEndpointListReturn = {
 	selectedEndpoint: EndpointListItem | null;
 	isDeleteModalOpen: boolean;
 	isDeleting: boolean;
+	isFetchingExternalApi: boolean;
+	externalApiResult: ExternalApiResult | null;
+	externalApiError: string | null;
 	handleEdit: (endpoint: EndpointListItem) => void;
 	handleDelete: (endpoint: EndpointListItem) => void;
 	handleConfirmDelete: () => void;
@@ -24,6 +34,7 @@ type UseEndpointListReturn = {
 	handleFormCancel: EndpointListFormPanelProps["onCancel"];
 	handleSelectEndpoint: (endpoint: EndpointListItem) => void;
 	handleSelectCollection: (collectionId: string) => void;
+	handleTestExternalApi: (url: string) => Promise<void>;
 };
 
 export const useEndpointList = (): UseEndpointListReturn => {
@@ -39,6 +50,10 @@ export const useEndpointList = (): UseEndpointListReturn => {
 	const [activeCollectionId, setActiveCollectionId] = useState<string | null>(
 		collections[0]?.id ?? null
 	);
+	const [isFetchingExternalApi, setIsFetchingExternalApi] = useState(false);
+	const [externalApiResult, setExternalApiResult] =
+		useState<ExternalApiResult | null>(null);
+	const [externalApiError, setExternalApiError] = useState<string | null>(null);
 
 	useEffect(() => {
 		const timer = setTimeout(() => {
@@ -122,6 +137,53 @@ export const useEndpointList = (): UseEndpointListReturn => {
 		setActiveEndpointId(firstEndpointInCollection?.id ?? null);
 	};
 
+	const handleTestExternalApi = async (url: string) => {
+		setIsFetchingExternalApi(true);
+		setExternalApiError(null);
+		setExternalApiResult(null);
+
+		const targetUrl = url.startsWith("http") ? url : `https://${url}`;
+
+		try {
+			const response = await fetch(targetUrl);
+			if (!response.ok) {
+				throw new Error(
+					`Falha na requisição: ${response.status} ${response.statusText}`
+				);
+			}
+
+			const contentType =
+				response.headers.get("content-type")?.toLowerCase() ?? "";
+			let payload: unknown;
+
+			if (contentType.includes("application/json")) {
+				payload = await response.json();
+			} else {
+				const rawText = await response.text();
+				try {
+					payload = JSON.parse(rawText);
+				} catch {
+					payload = rawText;
+				}
+			}
+
+			setExternalApiResult({
+				url: targetUrl,
+				payload,
+				status: response.status,
+				statusText: response.statusText,
+			});
+		} catch (error) {
+			const fallbackMessage =
+				error instanceof Error
+					? error.message
+					: "Não foi possível obter a resposta da API externa.";
+			setExternalApiError(fallbackMessage);
+		} finally {
+			setIsFetchingExternalApi(false);
+		}
+	};
+
 	const activeEndpoint = useMemo(() => {
 		if (!activeEndpointId) {
 			return null;
@@ -143,6 +205,9 @@ export const useEndpointList = (): UseEndpointListReturn => {
 		selectedEndpoint,
 		isDeleteModalOpen,
 		isDeleting,
+		isFetchingExternalApi,
+		externalApiResult,
+		externalApiError,
 		handleEdit,
 		handleDelete,
 		handleConfirmDelete,
@@ -151,5 +216,6 @@ export const useEndpointList = (): UseEndpointListReturn => {
 		handleFormCancel,
 		handleSelectEndpoint,
 		handleSelectCollection,
+		handleTestExternalApi,
 	};
 };

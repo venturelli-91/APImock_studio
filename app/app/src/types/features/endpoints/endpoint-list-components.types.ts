@@ -34,8 +34,20 @@ export interface EndpointListMainSectionProps {
 	onSelectEndpoint: (endpoint: EndpointListItem) => void;
 	onEditEndpoint: (endpoint: EndpointListItem) => void;
 	onDeleteEndpoint: (endpoint: EndpointListItem) => void;
+	onTestExternalApi: (url: string) => Promise<void> | void;
+	isTestingExternalApi: boolean;
+	externalApiError: string | null;
+	hasExternalApiResponse: boolean;
 }
 
 export interface EndpointPreviewSectionProps {
 	activeEndpoint: EndpointListItem | null;
+	externalApiResult: {
+		url: string;
+		payload: unknown;
+		status: number;
+		statusText: string;
+	} | null;
+	externalApiError: string | null;
+	isExternalApiLoading: boolean;
 }
